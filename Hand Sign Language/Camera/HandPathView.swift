@@ -14,7 +14,6 @@ struct HandPathView: View {
     @State private var wordSelections: [String] = ["AYAH", "IBU", "LAVA"]
     @State private var words: String = ""
     @State private var currentIndex: Int = 0
-
     
     @State private var showConfetti: Bool = false
     
