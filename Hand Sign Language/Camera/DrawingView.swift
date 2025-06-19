@@ -30,8 +30,10 @@ struct DrawingView: UIViewRepresentable {
             let objectBounds = detection.boundingBox
             
             // 3. Panggil fungsi helper yang meniru kode lama Anda.
-            let rectLayer = createRoundedRectLayer(with: objectBounds)
-            let labelLayer = createTextLayer(in: uiView.bounds, for: objectBounds, text: detection.label)
+            let rectLayer = createRoundedRectLayer(with: objectBounds, containerHeight: uiView.bounds.height)
+            let labelLayer = createTextLayer(           // ➜ tak butuh hostBounds/container lagi
+                boxSize: objectBounds.size,
+                text: detection.label)
             
             // 4. Susun layer: label di dalam kotak (sama seperti `rectLayer.addSublayer(labelLayer)`).
             rectLayer.addSublayer(labelLayer)
@@ -44,54 +46,57 @@ struct DrawingView: UIViewRepresentable {
     // MARK: - Helper Functions (Meniru Kode Lama)
 
     /// Membuat CALayer untuk kotak pembatas, sama persis dengan 'createRoundedRectLayerWithBounds'.
-    private func createRoundedRectLayer(with bounds: CGRect) -> CALayer {
-        let shapeLayer = CALayer()
-        shapeLayer.bounds = bounds
-        shapeLayer.position = CGPoint(x: bounds.midX, y: bounds.midY)
-        shapeLayer.name = "Found Object"
-        shapeLayer.backgroundColor = UIColor.systemYellow.withAlphaComponent(0.35).cgColor
-        shapeLayer.cornerRadius = 14
-        return shapeLayer
+    /// Kotak pembatas. `containerHeight` = tinggi UIView kanvas.
+    private func createRoundedRectLayer(with rect: CGRect,
+                                        containerHeight: CGFloat) -> CALayer {
+
+        let layer = CALayer()
+
+        // a. Ukuran layer = ukuran kotak
+        layer.bounds = CGRect(origin: .zero, size: rect.size)
+
+        // b. Balik sumbu-Y ➜ y' = H − midY
+        let invertedY = containerHeight - rect.midY
+        layer.position = CGPoint(x: rect.midX, y: invertedY)
+
+        layer.name            = "Found Object"
+        layer.backgroundColor = UIColor.systemYellow.withAlphaComponent(0.35).cgColor
+        layer.cornerRadius    = 14
+        return layer
     }
-    
-    /// Membuat CATextLayer untuk label, sama persis dengan 'createTextSubLayerInBounds'.
-    private func createTextLayer(in hostBounds: CGRect, for box: CGRect, text: String) -> CATextLayer {
-        // a. Atur font & atribut
+
+    /// Label persis di atas kotak (koordinat INTERNAL kotak)
+    private func createTextLayer(boxSize: CGSize, text: String) -> CATextLayer {
+
+        // 1. Atribut teks
         let fontSize: CGFloat = 30
-        let attributes: [NSAttributedString.Key: Any] = [
-            .font: UIFont.boldSystemFont(ofSize: fontSize),
+        let attr: [NSAttributedString.Key: Any] = [
+            .font           : UIFont.boldSystemFont(ofSize: fontSize),
             .foregroundColor: UIColor.white
         ]
-        let attributedText = NSAttributedString(string: text, attributes: attributes)
-        
-        // b. Hitung ukuran label dengan padding
-        let paddingX: CGFloat = 4
-        let paddingY: CGFloat = 2
-        var textRect = attributedText.boundingRect(with: CGSize(width: .greatestFiniteMagnitude, height: fontSize * 1.4), options: .usesLineFragmentOrigin, context: nil)
-        textRect.size.width = ceil(textRect.width) + paddingX * 2
-        textRect.size.height = ceil(textRect.height) + paddingY * 2
-        
-        // c. Posisi label (di atas kotak) dengan logika clamping
-        var origin = CGPoint(x: box.minX, y: box.minY - textRect.height - 2)
-        
-        // Kalau mentok atas, pindah ke dalam kotak
-        if origin.y < 0 { origin.y = box.minY + 2 }
-        
-        // Kalau mentok kanan, geser ke kiri
-        let maxX = hostBounds.width - textRect.width - 2
-        if origin.x > maxX { origin.x = maxX }
-        
-        // Pastikan tidak keluar dari sisi kiri
-        if origin.x < 0 { origin.x = 2 }
-        
-        // d. Bangun CATextLayer
-        let textLayer = CATextLayer()
-        textLayer.string = attributedText
-        textLayer.frame = CGRect(origin: origin, size: textRect.size)
-        textLayer.backgroundColor = UIColor.black.withAlphaComponent(0.6).cgColor
-        textLayer.cornerRadius = 3
-        textLayer.contentsScale = UIScreen.main.scale // Penting untuk display Retina
-        
-        return textLayer
+        let textAttr = NSAttributedString(string: text, attributes: attr)
+
+        // 2. Ukuran label + padding
+        let padX: CGFloat = 4, padY: CGFloat = 2
+        var tRect = textAttr.boundingRect(with: .init(width: .greatestFiniteMagnitude,
+                                                      height: fontSize * 1.4),
+                                          options: .usesLineFragmentOrigin,
+                                          context: nil)
+        tRect.size.width  = ceil(tRect.width)  + padX * 2
+        tRect.size.height = ceil(tRect.height) + padY * 2
+
+        // 3. Posisi: horizontal tengah, 2 pt di atas kotak
+        let x = max(2, (boxSize.width  - tRect.width ) / 2)
+        let y = -tRect.height - 2                       // negatif ⇒ di atas
+
+        // 4. Bangun layer
+        let tl = CATextLayer()
+        tl.string        = textAttr
+        tl.frame         = CGRect(origin: .init(x: x, y: y), size: tRect.size)
+        tl.backgroundColor = UIColor.black.withAlphaComponent(0.6).cgColor
+        tl.cornerRadius    = 3
+        tl.contentsScale   = UIScreen.main.scale
+        return tl
     }
+
 }
