@@ -10,7 +10,7 @@ struct HandPathView: View {
     @State private var cameraPosition: AVCaptureDevice.Position = .back
     
     // Kata target & posisi huruf saat ini
-    @State private var words: String = "AYAh"
+    @State private var words: String = "UDANG"
     @State private var currentIndex: Int = 0     // 0 → menunggu huruf pertama
     
     @State private var showConfetti: Bool = false
@@ -40,7 +40,18 @@ struct HandPathView: View {
                             .resizable()
                             .scaledToFit()
                             .frame(height: 120)
+                            .background(
+                                RoundedRectangle(cornerRadius: 12)
+                                    .fill(Color.gray.opacity(0.3)) // background langsung di belakang gambar
+                            )
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 12)
+                                    .stroke(Color.gray.opacity(0.8), lineWidth: 4) // outline di luar background
+                            )
+                            .shadow(color: .black.opacity(0.25), radius: 5, x: 0, y: 3)
                             .padding(.bottom, 10)
+
+
                     }
                     
                     // PROGRESS kata
