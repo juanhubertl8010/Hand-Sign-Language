@@ -10,8 +10,9 @@ struct HandPathView: View {
     @State private var cameraPosition: AVCaptureDevice.Position = .back
     
     // Kata target & posisi huruf saat ini
-    @State private var words: String = "AYAh"
-    @State private var currentIndex: Int = 0     // 0 → menunggu huruf pertama
+    @State private var wordSelections: [String] = ["AYAH", "IBU", "LAVA"]
+    @State private var words: String = ""
+    @State private var currentIndex: Int = 0
     
     @State private var showConfetti: Bool = false
     
@@ -94,6 +95,9 @@ struct HandPathView: View {
                         .transition(.opacity)
                 }
             }
+            .onAppear {
+                words = wordSelections.randomElement() ?? ""
+            }
             .edgesIgnoringSafeArea(.all)
             .onChange(of: currentIndex) { newValue in
                 if newValue == words.count {           // semua huruf selesai
@@ -103,6 +107,17 @@ struct HandPathView: View {
                         showConfetti = false
                         // reset progress kalau mau ulangi automatic:
                         // currentIndex = 0
+                        
+                        let oldWords = words
+                        var newWords = words
+                        while true {
+                            newWords = wordSelections.randomElement() ?? ""
+                            if newWords != oldWords {
+                                break
+                            }
+                        }
+                        words = newWords
+                        currentIndex = 0
                     }
                 }
             }
