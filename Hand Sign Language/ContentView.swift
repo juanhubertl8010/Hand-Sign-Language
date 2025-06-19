@@ -1,0 +1,46 @@
+import SwiftUI
+
+struct ContentView: View {
+    var body: some View {
+        NavigationStack {
+            ZStack {
+                Image("Background")
+                    .resizable()
+                    .scaledToFill()
+                    .ignoresSafeArea()
+                    .offset(x: -25)
+                    .allowsHitTesting(false)
+
+                VStack {
+                    Spacer()
+                    VStack(spacing: 30) {
+                        NavigationLink(destination: IntroductionAJ()) {
+                            Image("Introduction")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 300)
+                                .contentShape(Rectangle())
+                                .offset(y: 200)
+                        }
+
+                        NavigationLink(destination: Games()) {
+                            Image("Games")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 300)
+                                .contentShape(Rectangle())
+                                .offset(y: -150)
+                        }
+                    }
+                    Spacer()
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+            }
+        }
+    }
+}
+
+
+#Preview {
+    ContentView()
+}
