@@ -19,7 +19,7 @@ struct ContentView: View {
                                 .resizable()
                                 .scaledToFit()
                                 .frame(width: 300)
-                                .contentShape(Rectangle())
+            
                                 .offset(y: 200)
                         }
 
@@ -28,7 +28,6 @@ struct ContentView: View {
                                 .resizable()
                                 .scaledToFit()
                                 .frame(width: 300)
-                                .contentShape(Rectangle())
                                 .offset(y: -150)
                         }
                     }

@@ -20,19 +20,23 @@ struct IntroductionAJ: View {
                 VStack {
                     Spacer()
                     VStack(spacing: 30) {
-                        Image("A-M")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 300)
-                            .contentShape(Rectangle())
-                            .offset(x:-5, y: 120)
+                        NavigationLink(destination: AMHandPathView()) {
+                            Image("A-M")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 300)
+                                .contentShape(Rectangle())
+                                .offset(x:-5, y: 120)
+                        }
                         Spacer()
-                        Image("N-Z")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 300)
-                            .contentShape(Rectangle())
-                            .offset(x:-5, y: -180)
+                        NavigationLink(destination: NZHandPathView()) {
+                            Image("N-Z")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 300)
+                                .contentShape(Rectangle())
+                                .offset(x:-5, y: -180)
+                        }
                     }
                   
                        
