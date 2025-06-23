@@ -4,5 +4,10 @@
 <dict>
 	<key>Camera</key>
 	<string></string>
+	<key>NSBonjourServices</key>
+	<array>
+		<string>_HiSign._tcp</string>
+		<string>_HiSign._udp</string>
+	</array>
 </dict>
 </plist>

@@ -10,7 +10,7 @@ struct ContentView: View {
                     .ignoresSafeArea()
                     .offset(x: -25)
                     .allowsHitTesting(false)
-
+                
                 VStack {
                     Spacer()
                     VStack(spacing: 30) {
@@ -19,17 +19,32 @@ struct ContentView: View {
                                 .resizable()
                                 .scaledToFit()
                                 .frame(width: 300)
-            
-                                .offset(y: 200)
+//                                .offset(y: 200)
                         }
-
+                        
                         NavigationLink(destination: HandPathView()) {
                             Image("Games")
                                 .resizable()
                                 .scaledToFit()
                                 .frame(width: 300)
-                                .offset(y: -150)
+//                                .offset(y: -150)
                         }
+                        
+                        NavigationLink(destination: MultiplayerSetupView()) {
+                            Image("Games")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 300)
+//                                .offset(y: -500)
+                        }
+                        
+//                        NavigationLink(destination: MultiplayerSetupView()) {
+//                            Image("Games")
+//                                .resizable()
+//                                .scaledToFit()
+//                                .frame(width: 300)
+//                                .offset(y: -150)
+//                        }
                     }
                     Spacer()
                 }
