@@ -11,7 +11,13 @@ struct HandPathView: View {
     
     // Kata target & posisi huruf saat ini
 
-    @State private var wordSelections: [String] = ["AYAH", "IBU", "LAVA"]
+    @State private var wordSelections: [String] = [
+        "AYAH", "IBU", "LAVA", "BAWA", "BIAYA",
+        "BAYI", "CAHAYA", "COBA", "CABAI", "GAYA",
+        "GAIB", "WABAH", "YOYO", "VIVA", "BAHAYA",
+        "GAGAH", "GOYAH", "GIGI", "BOLA", "LAGI",
+        "HALO", "CARI", "AYO", "GOA", "BABI"
+    ]
     @State private var words: String = ""
     @State private var currentIndex: Int = 0
     
