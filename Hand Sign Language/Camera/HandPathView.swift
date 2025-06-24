@@ -1,5 +1,6 @@
 import SwiftUI
 import AVFoundation
+import ConfettiSwiftUI
 
 struct HandPathView: View {
     
@@ -20,9 +21,8 @@ struct HandPathView: View {
     ]
     @State private var words: String = ""
     @State private var currentIndex: Int = 0
-    
-    @State private var showConfetti: Bool = false
-    
+    @State private var correctWords: Int = 0
+        
     var body: some View {
         GeometryReader { geo in
             ZStack(alignment: .bottom) {
@@ -106,12 +106,6 @@ struct HandPathView: View {
                     */
                 }
                 .padding(.bottom, 30)
-                
-                if showConfetti {
-                    ConfettiView()
-                        .ignoresSafeArea()
-                        .transition(.opacity)
-                }
             }
             .onAppear {
                 words = wordSelections.randomElement() ?? ""
@@ -119,10 +113,9 @@ struct HandPathView: View {
             .edgesIgnoringSafeArea(.all)
             .onChange(of: currentIndex) { newValue in
                 if newValue == words.count {           // semua huruf selesai
-                    showConfetti = true
+                    correctWords += 1
                     // sembunyikan lagi agar bisa bermain ulang
                     DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                        showConfetti = false
                         // reset progress kalau mau ulangi automatic:
                         // currentIndex = 0
                         
@@ -139,6 +132,7 @@ struct HandPathView: View {
                     }
                 }
             }
+            .confettiCannon(trigger: $correctWords, num: 80, colors: [.red, .pink, .yellow], confettiSize: 10, rainHeight: 800, radius: 450)
         }
     }
 }
