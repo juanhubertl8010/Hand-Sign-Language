@@ -1,9 +1,9 @@
 import SwiftUI
 import AVFoundation
 import ConfettiSwiftUI
+import SwiftUI
 
-struct HandPathView: View {
-    
+struct HardHandPath: View {
     // ------- State utama -------
     @State private var detectionStatus = "Menginisialisasi kamera…"
     @State private var detections: [Detection] = []
@@ -12,7 +12,7 @@ struct HandPathView: View {
     // Kata target & posisi huruf saat ini
 
     @State private var wordSelections: [String] = [
-        "AYO", "GOA", "IBU", "UBI", "BYE", "HUG"
+        "BAHAYA", "GULAI", "ADUH", "GAWAI", "BALIHO"
     ]
     @State private var words: String = ""
     @State private var currentIndex: Int = 0
@@ -132,14 +132,6 @@ struct HandPathView: View {
     }
 }
 
-struct ScaleButtonStyle: ButtonStyle {
-    func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-            .scaleEffect(configuration.isPressed ? 0.95 : 1.0)
-            .animation(.easeInOut(duration: 0.2), value: configuration.isPressed)
-    }
-}
-
 #Preview {
-    HandPathView()
+    HardHandPath()
 }

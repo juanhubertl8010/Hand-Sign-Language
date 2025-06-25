@@ -23,7 +23,7 @@ struct ContentView: View {
                                 .offset(y: 200)
                         }
 
-                        NavigationLink(destination: HandPathView()) {
+                        NavigationLink(destination: Games()) {
                             Image("Games")
                                 .resizable()
                                 .scaledToFit()

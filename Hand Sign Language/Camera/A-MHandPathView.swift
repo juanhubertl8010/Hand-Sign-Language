@@ -8,11 +8,9 @@ struct AMHandPathView: View {
     @State private var detectionStatus: String = "Menginisialisasi kamera…"
     @State private var detections: [Detection] = []
     @State private var showConfetti = false
-
     var body: some View {
         GeometryReader { geo in
             ZStack(alignment: .bottom) {
-                
                 // Kamera + ML
                 ScannerView(detectionStatus: $detectionStatus,
                             detections:       $detections,
@@ -59,7 +57,6 @@ struct AMHandPathView: View {
                         .shadow(radius: 5)
                 }
                 .padding(.bottom, 30)
-
                 if showConfetti {
                     ConfettiView()
                         .ignoresSafeArea()
